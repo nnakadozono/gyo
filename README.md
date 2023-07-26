@@ -1,2 +1,2 @@
-# gyo
+# Gyo
 One liner log
