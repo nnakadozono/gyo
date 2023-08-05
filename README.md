@@ -14,3 +14,15 @@ npx create-next-app@latest --typescript
 ```bash
 npm install @mui/material @emotion/react @emotion/styled @mui/icons-material
 ```
+
+### FastAPI
+
+```bash
+pip install fastapi uvicorn
+```
+
+```bash
+uvicorn main:app --reload
+```
+
+http://127.0.0.1:8000/docs
