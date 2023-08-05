@@ -1,11 +1,35 @@
-from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from typing import Optional, List
+from typing import List
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
+from databases import Database
+from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String, Boolean, select
+
+DATABASE_URL = "postgresql://myuser:mypassword@localhost:5432/mydatabase"
+
+metadata = MetaData()
+
+todos = Table(
+    "todos",
+    metadata,
+    Column("id", Integer, primary_key=True),
+    Column("task", String(50)),
+    Column("completed", Boolean),
+)
+
+database = Database(DATABASE_URL)
+
+class TodoIn(BaseModel):
+    task: str
+    completed: bool = False
+
+class TodoOut(TodoIn):
+    id: int
 
 app = FastAPI()
 
 # CORS設定を追加
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,35 +38,33 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class Todo(BaseModel):
-    id: Optional[int] = None
-    task: str
-    completed: bool = False
+@app.on_event("startup")
+async def startup():
+    await database.connect()
 
-todos: List[Todo] = []
+@app.on_event("shutdown")
+async def shutdown():
+    await database.disconnect()
 
-@app.get("/api/todos", response_model=List[Todo])
+@app.get("/api/todos", response_model=List[TodoOut])
 async def get_todos():
-    return todos
+    query = todos.select()
+    return await database.fetch_all(query)
 
-@app.post("/api/todos", response_model=Todo)
-async def create_todo(todo: Todo):
-    todo.id = len(todos) + 1
-    todos.append(todo)
-    return todo
+@app.post("/api/todos", response_model=TodoOut)
+async def create_todo(todo: TodoIn):
+    query = todos.insert().values(task=todo.task, completed=todo.completed)
+    last_record_id = await database.execute(query)
+    return {**todo.dict(), "id": last_record_id}
 
-@app.patch("/api/todos/{todo_id}", response_model=Todo)
-async def toggle_todo(todo_id: int):
-    for todo in todos:
-        if todo.id == todo_id:
-            todo.completed = not todo.completed
-            return todo
-    return None
+@app.patch("/api/todos/{todo_id}", response_model=TodoOut)
+async def toggle_todo(todo_id: int, todo: TodoIn):
+    query = todos.update().where(todos.c.id == todo_id).values(task=todo.task, completed=todo.completed)
+    await database.execute(query)
+    return {**todo.dict(), "id": todo_id}
 
 @app.delete("/api/todos/{todo_id}")
 async def delete_todo(todo_id: int):
-    for todo in todos:
-        if todo.id == todo_id:
-            todos.remove(todo)
-            return {"message": f"Todo with id {todo_id} deleted."}
-    return {"message": f"No Todo with id {todo_id} found."}
+    query = todos.delete().where(todos.c.id == todo_id)
+    await database.execute(query)
+    return {"message": f"Todo with id {todo_id} deleted."}
