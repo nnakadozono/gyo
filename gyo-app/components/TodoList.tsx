@@ -1,9 +1,11 @@
 import { List } from '@mui/material';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import TodoItem from './TodoItem'
 import TodoInput from './TodoInput'
+import { getTodos, createTodo, toggleTodo, deleteTodo } from '../utils/api'
 
 type Task = {
+  id: string
   task: string
   completed: boolean
 }
@@ -11,33 +13,40 @@ type Task = {
 const TodoList: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([])
 
-  const addTask = (task: string) => {
-    setTasks([...tasks, { task, completed: false }])
+  useEffect(() => {
+    const fetchTodos = async () => {
+      const todos = await getTodos();
+      setTasks(todos);
+    };
+    fetchTodos();
+  }, []);
+
+  const addTask = async (task: string) => {
+    const newTask = await createTodo(task);
+    setTasks([...tasks, newTask]);
   }
 
-  const toggleTask = (index: number) => {
-    const newTasks = [...tasks]
-    newTasks[index].completed = !newTasks[index].completed
-    setTasks(newTasks)
+  const toggleTask = async (id: string) => {
+    await toggleTodo(id);
+    setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: !task.completed } : task)));
   }
 
-  const deleteTask = (index: number) => {
-    const newTasks = [...tasks]
-    newTasks.splice(index, 1)
-    setTasks(newTasks)
+  const deleteTask = async (id: string) => {
+    await deleteTodo(id);
+    setTasks(tasks.filter((task) => task.id !== id));
   }
 
   return (
     <div>
       <TodoInput addTask={addTask} />
       <List>
-        {tasks.map((task, index) => (
+        {tasks.map((task) => (
           <TodoItem
-            key={index}
+            key={task.id}
             task={task.task}
             completed={task.completed}
-            toggleTask={() => toggleTask(index)}
-            deleteTask={() => deleteTask(index)}
+            toggleTask={() => toggleTask(task.id)}
+            deleteTask={() => deleteTask(task.id)}
           />
         ))}
       </List>

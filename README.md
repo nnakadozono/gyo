@@ -25,4 +25,9 @@ pip install fastapi uvicorn
 uvicorn main:app --reload
 ```
 
+#### OpenAPI
 http://127.0.0.1:8000/docs
+
+#### CORS
+CORSの設定は、とりあえずガバガバで。
+
