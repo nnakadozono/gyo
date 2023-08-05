@@ -1,3 +1,4 @@
+import { TextField, Button, Box } from '@mui/material';
 import React, { useState } from 'react'
 
 type TodoInputProps = {
@@ -16,14 +17,17 @@ const TodoInput: React.FC<TodoInputProps> = ({ addTask }) => {
 
   return (
     <form onSubmit={submitTask}>
-      <input
-        type="text"
-        value={task}
-        onChange={(e) => setTask(e.target.value)}
-      />
-      <button type="submit">
-        追加
-      </button>
+      <Box display="flex" justifyContent="center" gap="10px" p={2}>
+        <TextField
+          label="New task"
+          variant="outlined"
+          value={task}
+          onChange={(e) => setTask(e.target.value)}
+        />
+        <Button type="submit" variant="contained" color="primary">
+          Add
+        </Button>
+      </Box>
     </form>
   )
 }

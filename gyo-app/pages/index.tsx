@@ -1,12 +1,15 @@
+import { Typography, Container } from '@mui/material';
 import React from 'react'
 import TodoList from '../components/TodoList'
 
 const IndexPage: React.FC = () => {
   return (
-    <div>
-      <h1>ToDoリスト</h1>
+    <Container maxWidth="sm">
+      <Typography variant="h4" align="center" gutterBottom>
+        ToDo List
+      </Typography>
       <TodoList />
-    </div>
+    </Container>
   )
 }
 

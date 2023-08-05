@@ -1,4 +1,7 @@
-import React from 'react'
+import { ListItem, ListItemText, IconButton, ListItemSecondaryAction } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 
 type TodoItemProps = {
   task: string
@@ -9,17 +12,17 @@ type TodoItemProps = {
 
 const TodoItem: React.FC<TodoItemProps> = ({ task, completed, toggleTask, deleteTask }) => {
   return (
-    <li>
-      <span style={{ textDecoration: completed ? 'line-through' : 'none' }}>
-        {task}
-      </span>
-      <button onClick={toggleTask}>
-        {completed ? '未完了' : '完了'}
-      </button>
-      <button onClick={deleteTask}>
-        削除
-      </button>
-    </li>
+    <ListItem>
+      <IconButton edge="start" color="inherit" onClick={toggleTask}>
+        {completed ? <CheckCircleOutlineIcon /> : <RadioButtonUncheckedIcon />}
+      </IconButton>
+      <ListItemText primary={task} style={{ textDecoration: completed ? 'line-through' : 'none' }} />
+      <ListItemSecondaryAction>
+        <IconButton edge="end" color="inherit" onClick={deleteTask}>
+          <DeleteIcon />
+        </IconButton>
+      </ListItemSecondaryAction>
+    </ListItem>
   )
 }
 

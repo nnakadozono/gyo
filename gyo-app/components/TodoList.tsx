@@ -1,3 +1,4 @@
+import { List } from '@mui/material';
 import React, { useState } from 'react'
 import TodoItem from './TodoItem'
 import TodoInput from './TodoInput'
@@ -29,7 +30,7 @@ const TodoList: React.FC = () => {
   return (
     <div>
       <TodoInput addTask={addTask} />
-      <ul>
+      <List>
         {tasks.map((task, index) => (
           <TodoItem
             key={index}
@@ -39,7 +40,7 @@ const TodoList: React.FC = () => {
             deleteTask={() => deleteTask(index)}
           />
         ))}
-      </ul>
+      </List>
     </div>
   )
 }
