@@ -1,0 +1,10 @@
+<mat-list-item class="list-item">
+  <button mat-icon-button (click)="toggleTask.emit()">
+    <mat-icon>{{ completed ? 'check_circle_outline' : 'radio_button_unchecked' }}</mat-icon>
+  </button>
+  <span [ngStyle]="{ 'text-decoration': textDecoration }" class="task">{{ task }}</span>
+  <button mat-icon-button (click)="deleteTask.emit()">
+    <mat-icon>delete</mat-icon>
+  </button>
+</mat-list-item>
+

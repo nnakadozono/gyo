@@ -1,0 +1,10 @@
+<app-todo-input (addTask)="addTask($event)"></app-todo-input>
+<mat-list>
+  <app-todo-item
+    *ngFor="let task of tasks$ | async"
+    [task]="task.task"
+    [completed]="task.completed"
+    (toggleTask)="toggleTask(task.id)"
+    (deleteTask)="deleteTask(task.id)"
+  ></app-todo-item>
+</mat-list>

@@ -63,5 +63,18 @@ pip install fastapi uvicorn sqlalchemy async-exit-stack async-generator pydantic
 ### Angular
 ```bash
 ng new gyo-angular
+
+ng generate component todo-list
+ng generate component todo-item
+ng generate component todo-input
+ng generate service todo
+
+ng add @angular/material
 ```
+
+```bash
+ng serve
+```
+
+
 
