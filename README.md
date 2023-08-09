@@ -58,3 +58,10 @@ alembic upgrade head
 ```bash
 pip install fastapi uvicorn sqlalchemy async-exit-stack async-generator pydantic psycopg2-binary databases asyncpg
 ```
+
+
+### Angular
+```bash
+ng new gyo-angular
+```
+
