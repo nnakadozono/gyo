@@ -9,7 +9,8 @@ using TodoApi.Models;
 
 namespace gyo_aspdotnet.Controllers
 {
-    [Route("api/[controller]")]
+    // [Route("api/[controller]")]
+    [Route("api/todos")]
     [ApiController]
     public class TodoItemsController : ControllerBase
     {
@@ -24,22 +25,22 @@ namespace gyo_aspdotnet.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
         {
-            if (_context.TodoItems == null)
+            if (_context.todos == null)
             {
                 return NotFound();
             }
-            return await _context.TodoItems.ToListAsync();
+            return await _context.todos.ToListAsync();
         }
 
         // GET: api/TodoItems/5
         [HttpGet("{id}")]
         public async Task<ActionResult<TodoItem>> GetTodoItem(int id)
         {
-            if (_context.TodoItems == null)
+            if (_context.todos == null)
             {
                 return NotFound();
             }
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var todoItem = await _context.todos.FindAsync(id);
 
             if (todoItem == null)
             {
@@ -54,20 +55,20 @@ namespace gyo_aspdotnet.Controllers
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItemCreateDTO todoItemDTO)
         {
-            if (_context.TodoItems == null)
+            if (_context.todos == null)
             {
                 return Problem("Entity set 'TodoContext.TodoItems'  is null.");
             }
             var todoItem = new TodoItem
             {
-                Task = todoItemDTO.Task,
-                Completed = todoItemDTO.Completed
+                task = todoItemDTO.task,
+                completed = todoItemDTO.completed
             };
 
-            _context.TodoItems.Add(todoItem);
+            _context.todos.Add(todoItem);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
+            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.id }, todoItem);
         }
 
         // PUT: api/TodoItems/5
@@ -75,7 +76,7 @@ namespace gyo_aspdotnet.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutTodoItem(int id, TodoItem todoItem)
         {
-            if (id != todoItem.Id)
+            if (id != todoItem.id)
             {
                 return BadRequest();
             }
@@ -105,17 +106,17 @@ namespace gyo_aspdotnet.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTodoItem(int id)
         {
-            if (_context.TodoItems == null)
+            if (_context.todos == null)
             {
                 return NotFound();
             }
-            var todoItem = await _context.TodoItems.FindAsync(id);
+            var todoItem = await _context.todos.FindAsync(id);
             if (todoItem == null)
             {
                 return NotFound();
             }
 
-            _context.TodoItems.Remove(todoItem);
+            _context.todos.Remove(todoItem);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -123,7 +124,7 @@ namespace gyo_aspdotnet.Controllers
 
         private bool TodoItemExists(int id)
         {
-            return (_context.TodoItems?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.todos?.Any(e => e.id == id)).GetValueOrDefault();
         }
     }
 }
