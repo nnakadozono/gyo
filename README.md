@@ -58,3 +58,36 @@ alembic upgrade head
 ```bash
 pip install fastapi uvicorn sqlalchemy async-exit-stack async-generator pydantic psycopg2-binary databases asyncpg
 ```
+
+```bash
+pip install python-dotenv
+```
+
+### Poetry
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+mkdir ~/.zfunc/
+poetry completions zsh > ~/.zfunc/_poetry
+brew cleanup
+
+poetry init
+poetry add fastapi uvicorn
+poetry add sqlalchemy==1.4.42 alembic psycopg2-binary
+poetry add fastapi uvicorn sqlalchemy async-exit-stack async-generator pydantic psycopg2-binary databases asyncpg
+poetry add python-dotenv
+
+poetry run uvicorn main:app --reload
+alembic revision -m "create todos table"
+alembic upgrade head
+```
+
+### Environment variables
+#### gyo-api/.env
+GYO_DB=postgresql://.....
+
+
+### Deploy
+* gyo-app => Vercel
+* gyo-api => Render
+* postgres => Render
