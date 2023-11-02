@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000/api/todos";
+const API_URL = `${process.env.NEXT_PUBLIC_API_URL}/api/todos` || "http://localhost:8000/api/todos";
 
 export const getTodos = async () => {
   const response = await fetch(API_URL);
@@ -7,6 +7,7 @@ export const getTodos = async () => {
 };
 
 export const createTodo = async (task: string) => {
+  console.log(API_URL)
   const response = await fetch(API_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
