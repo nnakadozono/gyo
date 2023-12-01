@@ -91,3 +91,18 @@ GYO_DB=postgresql://.....
 * gyo-app => Vercel
 * gyo-api => Render
 * postgres => Render
+
+### Terraform
+```bash
+$ brew install terraform
+```
+
+https://zenn.dev/keita_hino/articles/3044d2af6dec61
+
+```bash
+$ terraform init
+$ terraform plan
+$ terraform apply
+```
+
+
