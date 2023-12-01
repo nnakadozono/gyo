@@ -6,4 +6,9 @@ resource "vercel_project" "gyo-app" {
     repo = "nnakadozono/gyo"
   }
   root_directory = "gyo-app"
+  environment = [{
+    key   = "NEXT_PUBLIC_API_URL"
+    value = "https://gyo-api.onrender.com"
+    target  = ["production"]
+  }]
 }
