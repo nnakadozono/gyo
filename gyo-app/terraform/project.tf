@@ -8,7 +8,7 @@ resource "vercel_project" "gyo-app" {
   root_directory = "gyo-app"
   environment = [{
     key   = "NEXT_PUBLIC_API_URL"
-    value = "https://gyo-api.onrender.com"
+    value = "${var.next_public_api_url}"
     target  = ["production"]
   }]
 }
