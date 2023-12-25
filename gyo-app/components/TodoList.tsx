@@ -2,7 +2,7 @@ import { List } from '@mui/material';
 import React, { useState, useEffect } from 'react'
 import TodoItem from './TodoItem'
 import TodoInput from './TodoInput'
-import { getTodos, createTodo, toggleTodo, deleteTodo } from '../utils/api'
+import { getTodos, createTodo, updateTodo, deleteTodo } from '../utils/api'
 
 type Task = {
   id: string
@@ -27,7 +27,8 @@ const TodoList: React.FC = () => {
   }
 
   const toggleTask = async (id: string) => {
-    await toggleTodo(id);
+    const task = tasks.find((task) => task.id === id)!;
+    await updateTodo(id, task.task, !task.completed);
     setTasks(tasks.map((task) => (task.id === id ? { ...task, completed: !task.completed } : task)));
   }
 

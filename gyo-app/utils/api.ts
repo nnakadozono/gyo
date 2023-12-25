@@ -17,9 +17,11 @@ export const createTodo = async (task: string) => {
   return todo;
 };
 
-export const toggleTodo = async (id: string) => {
+export const updateTodo = async (id: string, task: string, completed: boolean) => {
   const response = await fetch(`${API_URL}/${id}`, {
     method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ task, completed })
   });
   const todo = await response.json();
   return todo;

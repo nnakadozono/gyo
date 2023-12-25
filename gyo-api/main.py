@@ -27,6 +27,10 @@ class TodoIn(BaseModel):
     task: str
     completed: bool = False
 
+class TodoUpdate(BaseModel):
+    task: str
+    completed: bool
+
 class TodoOut(TodoIn):
     id: int
 
@@ -62,7 +66,7 @@ async def create_todo(todo: TodoIn):
     return {**todo.dict(), "id": last_record_id}
 
 @app.patch("/api/todos/{todo_id}", response_model=TodoOut)
-async def toggle_todo(todo_id: int, todo: TodoIn):
+async def toggle_todo(todo_id: int, todo: TodoUpdate):
     query = todos.update().where(todos.c.id == todo_id).values(task=todo.task, completed=todo.completed)
     await database.execute(query)
     return {**todo.dict(), "id": todo_id}
