@@ -7,10 +7,17 @@ const IndexPage: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Gyo - One-line log</title>        
+        <title>Gyo - One-line log</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <Container maxWidth="sm">
+      <Container
+        maxWidth="sm"
+        style={{
+          backgroundImage: "url('/background.png')",
+          height: "100vh",
+          backgroundSize: "cover",
+        }}
+      >
         <Typography variant="h4" align="center" gutterBottom>
           Gyo
         </Typography>
